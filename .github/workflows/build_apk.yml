@@ -3,28 +3,34 @@ name: Build Kivy Android APK
 on:
   push:
     branches:
-      # Trigger the workflow whenever code is pushed to the 'main' branch
+      # This workflow runs whenever code is pushed to the 'main' branch
       - main
+  workflow_dispatch:
+    # Allows you to manually trigger the workflow from the GitHub Actions tab
 
 jobs:
-  build:
-    name: Build APK
+  build_android:
+    name: Build APK for Android
     runs-on: ubuntu-latest # GitHub's runner machine (Linux)
 
     steps:
-      # Step 1: Checks out a copy of your repository on the runner machine
-      - uses: actions/checkout@v4
+      # Step 1: Checkout the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      # Step 2: Uses the specialized Buildozer action
-      - name: Set up Buildozer and Build APK
-        uses: kottman/action-buildozer@v1
+      # Step 2: Build the APK using the maintained Buildozer action
+      - name: Build APK with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer # Assign an ID to this step to reference its outputs later
         with:
+          # This command tells buildozer to create a debug APK
           command: buildozer android debug
-
-      # Step 3: Archives the resulting APK file
-      - name: Upload Artifact
+          buildozer_version: stable # Use the latest stable version of Buildozer
+          
+      # Step 3: Upload the resulting APK as an artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-release-apk
-          # The APK file is generated in the 'bin' folder
-          path: bin/*.apk
+          name: dicom-viewer-apk
+          # This path retrieves the file name output by the buildozer step
+          path: ${{ steps.buildozer.outputs.filename }}
