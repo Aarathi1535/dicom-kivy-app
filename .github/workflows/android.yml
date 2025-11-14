@@ -19,7 +19,7 @@ jobs:
       - name: Install Python-for-Android
         run: |
           python -m pip install --upgrade pip
-          pip install python-for-android==2024.04.15 cython==0.29.36
+          pip install python-for-android==2024.1.21 cython==0.29.36
 
       - name: Build APK
         run: |
