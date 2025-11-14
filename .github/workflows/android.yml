@@ -8,36 +8,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install Python-for-Android
-      run: |
-        python -m pip install --upgrade pip
-        pip install python-for-android==2024.04.15 cython==0.29.36
+      - name: Install Python-for-Android
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-for-android==2024.04.15 cython==0.29.36
 
-    - name: Build APK
-      run: |
-        p4a apk \
-          --private . \
-          --package=org.kivy.dicomviewer \
-          --name "DICOM Viewer" \
-          --version 1.0 \
-          --bootstrap=sdl2 \
-          --requirements=python3,kivy,pydicom,pillow,numpy \
-          --orientation=portrait \
-          --permission READ_EXTERNAL_STORAGE \
-          --permission WRITE_EXTERNAL_STORAGE \
-          --copy-libs \
-          --release-unsigned
+      - name: Build APK
+        run: |
+          p4a apk \
+            --private . \
+            --package=org.kivy.dicomviewer \
+            --name "DICOM Viewer" \
+            --version 1.0 \
+            --bootstrap=sdl2 \
+            --requirements=python3,kivy,pydicom,pillow,numpy \
+            --orientation=portrait \
+            --permission READ_EXTERNAL_STORAGE \
+            --permission WRITE_EXTERNAL_STORAGE \
+            --copy-libs \
+            --release-unsigned
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: dicom-apk
-        path: *.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: dicom-apk
+          path: "*.apk"
