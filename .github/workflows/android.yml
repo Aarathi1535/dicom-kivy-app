@@ -35,7 +35,8 @@ jobs:
             --permission WRITE_EXTERNAL_STORAGE \
             --copy-libs \
             --release-unsigned \
-            --arch arm64-v8a
+            --arch arm64-v8a \
+            --android-api 34
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
